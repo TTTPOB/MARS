@@ -25,6 +25,7 @@ cmake --install .build/sdsl-build
 cat > .build/seqan-musl-compat.h <<'EOF'
 #include <limits.h>
 #include <unistd.h>
+#include <stdint.h>
 #ifdef PAGESIZE
 #undef PAGESIZE
 #endif

@@ -47,5 +47,5 @@ Unofficial static Linux x86_64 build of **lorrainea/MARS** (circular sequence ro
 - Checks required before publication: ELF has no INTERP/NEEDED entries; deterministic circular rotations and upstream data/10.gappy.fasta pass real CLI tests.
 - MARS and SDSL: GPL-3.0-or-later. LICENSE, NOTICE.md and licenses/ ship alongside the executable. SHA256SUMS covers both release archives.
 
-Rebuild from the accompanying source following STATIC-BUILD.md. Build-only adaptations omit unused bundled GoogleTest, disable SDSL host-CPU detection for a portable x86_64 baseline, and undefine musl's PAGESIZE macro before old SeqAn headers; algorithm and CLI sources are unchanged.
+Rebuild from the accompanying source following STATIC-BUILD.md. Build-only adaptations supply the missing stdint.h include, omit unused bundled GoogleTest, disable SDSL host-CPU detection for a portable x86_64 baseline, and undefine musl's PAGESIZE macro before old SeqAn headers; algorithm and CLI sources are unchanged.
 EOF
