@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing release tag to build (never replace assets)'
+        description: 'Git ref to build; master validates only, existing v*-static.* tags publish'
         required: true
         default: 'v0.1.0-static.1'
 
@@ -33,6 +33,7 @@ jobs:
           python3 scripts/verify-rotation.py .build/mars
           bash scripts/package-release.sh "$VERSION"
       - name: Publish immutable fork release assets
+        if: startsWith(github.ref, 'refs/tags/v') || startsWith(inputs.tag, 'v')
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ inputs.tag || github.ref_name }}
