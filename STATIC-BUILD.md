@@ -21,7 +21,7 @@ Extract `mars-v0.1.0-static.1-source.tar.gz`, enter its directory, and run:
 ```sh
 docker run --rm --platform linux/amd64 -v "$PWD:/src" -w /src \
   alpine:3.20@sha256:c64c687cbea9300178b30c95835354e34c4e4febc4badfe27102879de0483b5e \
-  sh -c 'apk add --no-cache build-base cmake python3 bash git unzip binutils file && bash scripts/build-static.sh'
+  sh -c 'apk add --no-cache build-base cmake python3 bash git unzip binutils file && bash scripts/build-static.sh && chown -R "$1:$2" .build' sh "$(id -u)" "$(id -g)"
 ```
 
 Podman may replace Docker. No host-global tool installation is needed. The resulting executable is `.build/mars`. `python3 scripts/verify-rotation.py .build/mars` runs a deterministic 240 bp circular sequence in three origins and the upstream 10.gappy.fasta example. Each output must preserve identifiers, lengths and circular sequence content; at least one record must really change, and the identical synthetic circles must reach the same origin.
