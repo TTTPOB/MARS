@@ -1,0 +1,42 @@
+name: Static Linux release
+
+on:
+  push:
+    tags: ['v*-static.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to build (never replace assets)'
+        required: true
+        default: 'v0.1.0-static.1'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          fetch-depth: 0
+      - name: Build with musl in Alpine
+        run: |
+          docker run --rm --platform linux/amd64 -v "$PWD:/src" -w /src \
+            alpine:3.20@sha256:c64c687cbea9300178b30c95835354e34c4e4febc4badfe27102879de0483b5e \
+            sh -c 'apk add --no-cache build-base cmake python3 bash git unzip binutils file && bash scripts/build-static.sh'
+      - name: Verify and package binary and corresponding source
+        env:
+          VERSION: ${{ inputs.tag || github.ref_name }}
+        run: |
+          python3 scripts/verify-rotation.py .build/mars
+          bash scripts/package-release.sh "$VERSION"
+      - name: Publish immutable fork release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.tag || github.ref_name }}
+        run: |
+          gh release create "$VERSION" dist/* --verify-tag \
+            --title "MARS $VERSION — unofficial static Linux x86_64" \
+            --notes-file .build/release-notes.md

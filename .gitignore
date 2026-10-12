@@ -3,3 +3,6 @@ libsdsl/
 sdsl-lite/
 seqan/
 mars
+.build/
+dist/
+__pycache__/
