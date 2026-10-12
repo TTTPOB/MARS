@@ -11,6 +11,8 @@ python3 - <<'PY'
 from pathlib import Path
 p = Path('.build/sdsl-lite/external/CMakeLists.txt')
 p.write_text(p.read_text().replace('add_subdirectory(gtest-1.6.0)', ''))
+# Old SDSL overwrites the command-line setting after probing the build CPU.
+Path('.build/sdsl-lite/CMakeModules/CheckSSE4_2.cmake').write_text('set(BUILTIN_POPCNT 0)\n')
 PY
 cmake -S .build/sdsl-lite -B .build/sdsl-build \
   -DBUILD_SHARED_LIBS=OFF -DBUILTIN_POPCNT=OFF \

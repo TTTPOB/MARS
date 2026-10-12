@@ -19,4 +19,4 @@ The vendored Edlib files do not record an exact upstream revision or their own l
 
 The accompanying `mars-VERSION-source.tar.gz` release asset is the complete fork source tree for the binary's recorded fork commit, including the original dependency source archives. Build scripts and the build-only compatibility shim are supplied there. Runtime library combinations are produced by an eligible GCC compilation covered by the GCC Runtime Library Exception; no custom runtime libraries are used. BUILD-INFO.txt records the compiler/runtime versions and source commit. STATIC-BUILD.md explains rebuilding.
 
-All upstream algorithm and CLI implementation files are unchanged. Build-only changes skip the unused bundled GoogleTest suite and undefine the musl PAGESIZE macro before including the old SeqAn headers. No warranty is provided.
+All upstream algorithm and CLI implementation files are unchanged. Build-only changes skip the unused bundled GoogleTest suite, disable SDSL’s build-host CPU probe for portable x86_64 code, and undefine the musl PAGESIZE macro before including the old SeqAn headers. No warranty is provided.
